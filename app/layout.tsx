@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import Header from "@/components/Header";
+import IntroGate from "@/components/IntroGate";
 import MotionProvider from "@/components/MotionProvider";
 import { getSession } from "@/lib/supabase/server";
 import "./globals.css";
@@ -25,6 +26,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en-GB" className={`${outfit.variable} ${geist.variable} ${geistMono.variable}`}>
       <body>
         <MotionProvider>
+          <IntroGate />
           <Header signedIn={!!user} isAdmin={!!profile?.is_admin} />
           {children}
         </MotionProvider>

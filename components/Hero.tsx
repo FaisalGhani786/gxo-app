@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { useEffect, useState } from "react";
 import { Film, Layers, Play, Scissors, Sparkle, Type, Wave, WhatsApp } from "./Icons";
 
 const TITLE = "gxoeditz!".split("");
@@ -108,9 +109,16 @@ function Timeline() {
 export default function Hero({ whatsapp }: { whatsapp: string }) {
   const { scrollYProgress } = useScroll();
   const titleScale = useTransform(scrollYProgress, [0, 0.25], [1, 0.92]);
+  // Replay the entrance once the intro has split open (it ran hidden underneath).
+  const [take, setTake] = useState(0);
+  useEffect(() => {
+    const replay = () => setTake((t) => t + 1);
+    window.addEventListener("gxo:intro-done", replay);
+    return () => window.removeEventListener("gxo:intro-done", replay);
+  }, []);
 
   return (
-    <section className="hero">
+    <section className="hero" key={take}>
       <div className="hero-tiles">
         {TILES.map((t, i) => (
           <Tile key={i} t={t} scroll={scrollYProgress} />
